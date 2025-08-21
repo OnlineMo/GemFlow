@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "updatedAt": "1970-01-01T00:00:00Z",
+  "defaults": {
+    "maxRecentPerCategory": 20,
+    "dateFormat": "YYYY-MM-DD",
+    "filePattern": "{title}-{date}--v{edition}.md",
+    "rootDir": "AI_Reports"
+  },
+  "categories": [
+    {
+      "slug": "ai-ml",
+      "display": "AI 与机器学习",
+      "description": "算法、训练、推理优化、RAG、评测、AIOps 等",
+      "aliases": [
+        "ai",
+        "ml",
+        "machine learning",
+        "deep learning",
+        "人工智能",
+        "深度学习",
+        "推理",
+        "RAG",
+        "检索增强"
+      ],
+      "navOrder": 10
+    },
+    {
+      "slug": "llm",
+      "display": "大语言模型",
+      "description": "通用/多模态大模型、Agent、模型评测、提示工程、思维链/工具调用",
+      "aliases": [
+        "llm",
+        "large language model",
+        "多模态",
+        "agent",
+        "提示工程",
+        "chain-of-thought",
+        "function calling",
+        "工具调用",
+        "reasoning"
+      ],
+      "navOrder": 11
+    },
+    {
+      "slug": "software-dev",
+      "display": "软件开发与工程",
+      "description": "编程语言、架构、工程实践、测试、性能与可维护性",
+      "aliases": [
+        "软件工程",
+        "编程",
+        "开发",
+        "架构",
+        "testing",
+        "源码",
+        "refactor",
+        "CI",
+        "设计模式"
+      ],
+      "navOrder": 20
+    },
+    {
+      "slug": "cybersecurity",
+      "display": "网络安全",
+      "description": "漏洞、攻防对抗、隐私、加密与合规",
+      "aliases": [
+        "安全",
+        "网络安全",
+        "信息安全",
+        "漏洞",
+        "渗透",
+        "CVE",
+        "隐私",
+        "加密"
+      ],
+      "navOrder": 30
+    },
+    {
+      "slug": "cloud-devops",
+      "display": "云与 DevOps",
+      "description": "云计算、容器/K8s、Serverless、CI/CD、可观测性",
+      "aliases": [
+        "云",
+        "k8s",
+        "kubernetes",
+        "容器",
+        "serverless",
+        "devops",
+        "cicd",
+        "observability",
+        "sre"
+      ],
+      "navOrder": 21
+    },
+    {
+      "slug": "data",
+      "display": "数据与数据库",
+      "description": "数据工程、数据仓库、数据库、流处理与治理",
+      "aliases": [
+        "数据",
+        "database",
+        "db",
+        "olap",
+        "oltp",
+        "数仓",
+        "etl",
+        "数据湖",
+        "lakehouse",
+        "spark",
+        "flink"
+      ],
+      "navOrder": 22
+    },
+    {
+      "slug": "web-mobile",
+      "display": "Web 与移动",
+      "description": "前端、移动端、浏览器、W3C/生态",
+      "aliases": [
+        "前端",
+        "web",
+        "browser",
+        "移动",
+        "android",
+        "ios",
+        "flutter",
+        "react",
+        "vue",
+        "vite",
+        "uniapp"
+      ],
+      "navOrder": 23
+    },
+    {
+      "slug": "consumer-tech",
+      "display": "消费电子与硬件",
+      "description": "消费电子、芯片、终端设备与操作系统",
+      "aliases": [
+        "消费电子",
+        "数码",
+        "手机",
+        "芯片",
+        "SoC",
+        "硬件",
+        "可穿戴",
+        "操作系统",
+        "OS"
+      ],
+      "navOrder": 40
+    },
+    {
+      "slug": "gaming",
+      "display": "游戏与交互",
+      "description": "游戏产业、引擎、交互与 XR/AR/VR",
+      "aliases": [
+        "游戏",
+        "game",
+        "unity",
+        "unreal",
+        "ue",
+        "ar",
+        "vr",
+        "xr",
+        "交互",
+        "引擎"
+      ],
+      "navOrder": 41
+    },
+    {
+      "slug": "blockchain",
+      "display": "区块链与加密",
+      "description": "区块链协议、DeFi、加密资产、应用生态",
+      "aliases": [
+        "区块链",
+        "crypto",
+        "web3",
+        "defi",
+        "nft",
+        "链上",
+        "以太坊",
+        "比特币",
+        "solana"
+      ],
+      "navOrder": 50
+    },
+    {
+      "slug": "science",
+      "display": "科学与太空",
+      "description": "基础科学、太空、材料与科研进展",
+      "aliases": [
+        "科学",
+        "science",
+        "physics",
+        "astronomy",
+        "space",
+        "材料",
+        "航天",
+        "nasa",
+        "esa"
+      ],
+      "navOrder": 60
+    },
+    {
+      "slug": "healthcare",
+      "display": "医疗与生物",
+      "description": "医疗健康、生物科技、药物与诊断",
+      "aliases": [
+        "医疗",
+        "健康",
+        "biotech",
+        "制药",
+        "药物",
+        "诊断",
+        "医疗器械",
+        "基因",
+        "蛋白质"
+      ],
+      "navOrder": 61
+    },
+    {
+      "slug": "energy-climate",
+      "display": "能源与气候",
+      "description": "新能源、储能、能源系统与气候变化",
+      "aliases": [
+        "能源",
+        "新能源",
+        "储能",
+        "光伏",
+        "风电",
+        "电池",
+        "碳中和",
+        "气候",
+        "碳交易"
+      ],
+      "navOrder": 62
+    },
+    {
+      "slug": "economy",
+      "display": "经济与市场",
+      "description": "宏观经济、行业研究、公司财报与市场",
+      "aliases": [
+        "经济",
+        "宏观",
+        "市场",
+        "财报",
+        "股市",
+        "行业",
+        "估值",
+        "投研",
+        "分析师"
+      ],
+      "navOrder": 70
+    },
+    {
+      "slug": "policy",
+      "display": "政策与监管",
+      "description": "政策法规、标准合规与国际监管",
+      "aliases": [
+        "政策",
+        "监管",
+        "法规",
+        "法律",
+        "标准",
+        "条例",
+        "合规",
+        "GDPR",
+        "数据出境"
+      ],
+      "navOrder": 71
+    },
+    {
+      "slug": "industry",
+      "display": "产业与公司",
+      "description": "产业动态、公司战略、并购与投融资",
+      "aliases": [
+        "产业",
+        "公司",
+        "并购",
+        "融资",
+        "ipo",
+        "战略",
+        "供应链",
+        "经营",
+        "商业模式"
+      ],
+      "navOrder": 72
+    },
+    {
+      "slug": "culture-media",
+      "display": "文化与媒体",
+      "description": "文化传媒、内容平台与创作者经济",
+      "aliases": [
+        "文化",
+        "媒体",
+        "内容",
+        "短视频",
+        "直播",
+        "平台",
+        "创作者",
+        "ugc",
+        "aigc"
+      ],
+      "navOrder": 80
+    },
+    {
+      "slug": "uncategorized",
+      "display": "未分类",
+      "description": "未分类/置信度低/待回顾",
+      "aliases": [
+        "uncategorized",
+        "未分类",
+        "其他",
+        "杂项",
+        "待回顾"
+      ],
+      "navOrder": 99,
+      "catchAll": true
+    }
+  ]
+}

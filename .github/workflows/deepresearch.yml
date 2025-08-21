@@ -73,7 +73,7 @@ jobs:
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: /
+        working-directory: ./
 
     steps:
       - name: Checkout
@@ -87,13 +87,63 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
+        env:
+          npm_config_cache: ${{ runner.temp }}/.npm-cache
+          npm_config_tmp: ${{ runner.temp }}/.npm-tmp
+          NPM_CONFIG_AUDIT: "false"
+          NPM_CONFIG_FUND: "false"
         run: |
+          set -e
+          # Auto-detect project root (repo root or ./GemFlow)
+          if [ ! -f package.json ] && [ -f GemFlow/package.json ]; then
+            echo "Detected package.json inside GemFlow/. Switching directory."
+            cd GemFlow
+          fi
+
+          echo "Using isolated npm cache at: $npm_config_cache"
+          npm --version
+          node --version
+          npm cache clean --force || true
+          rm -rf node_modules || true
+
           if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
             echo "Lockfile found (package-lock.json or npm-shrinkwrap.json). Using npm ci"
-            npm ci
+            npm ci --no-audit --no-fund
           else
-            echo "No npm lockfile found. Using npm install"
+            echo "No npm lockfile found. Trying npm install"
+            set +e
             npm install --no-audit --no-fund
+            rc=$?
+            set -e
+            if [ $rc -ne 0 ]; then
+              echo "npm install failed with code $rc. Applying workaround for 'idealTree'..."
+              npm --version
+              echo "Downgrading npm to a stable version and retrying..."
+              set +e
+              npm i -g npm@9
+              rc2=$?
+              set -e
+              if [ $rc2 -ne 0 ]; then
+                echo "Downgrade to npm@9 failed or not permitted. Trying npm@10.8.2..."
+                set +e
+                npm i -g npm@10.8.2
+                set -e
+              fi
+              npm --version
+              npm cache clean --force || true
+              rm -rf node_modules || true
+              set +e
+              npm install --no-audit --no-fund --legacy-peer-deps
+              rc3=$?
+              set -e
+              if [ $rc3 -ne 0 ]; then
+                echo "npm still failing (code $rc3). Falling back to pnpm via corepack..."
+                corepack enable
+                corepack prepare pnpm@9 --activate || true
+                pnpm --version
+                pnpm install --no-frozen-lockfile
+              fi
+            fi
           fi
 
       - name: Configure git user
@@ -110,6 +160,11 @@ jobs:
           TZ: Asia/Shanghai
         run: |
           set -e
+          # Auto-detect project root (repo root or ./GemFlow)
+          if [ ! -f package.json ] && [ -f GemFlow/package.json ]; then
+            echo "Detected package.json inside GemFlow/. Switching directory."
+            cd GemFlow
+          fi
           echo "UTC now: $(date -u)"
           echo "Local (Asia/Shanghai) now: $(TZ=Asia/Shanghai date)"
           # 默认 REPO_B（如未配置仓库变量）
@@ -123,4 +178,3 @@ jobs:
             echo "[placeholder] Implement scripts/deepresearch.mjs or npm run deepresearch:daily"
             node -e "console.log('Daily DeepResearch placeholder at', new Date().toISOString())"
           fi
-

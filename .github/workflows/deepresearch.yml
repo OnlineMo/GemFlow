@@ -96,6 +96,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_B_TOKEN }}   # 建议最小权限 PAT（repo:contents）写入库 B
           REPO_B: ${{ vars.REPO_B }}              # 建议设置为 owner/DeepResearch-Archive；脚本会有默认值
+          RATE_LIMIT_RPM: ${{ vars.RATE_LIMIT_RPM }}   # 每分钟请求数（RPM），例如 1
+          RATE_LIMIT_TPM: ${{ vars.RATE_LIMIT_TPM }}   # 每分钟 Token 数（TPM），例如 12500
           TZ: Asia/Shanghai
         run: |
           set -e

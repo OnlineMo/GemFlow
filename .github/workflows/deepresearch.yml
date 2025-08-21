@@ -73,7 +73,7 @@ jobs:
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: GemFlow
+        working-directory: /
 
     steps:
       - name: Checkout
@@ -123,3 +123,4 @@ jobs:
             echo "[placeholder] Implement scripts/deepresearch.mjs or npm run deepresearch:daily"
             node -e "console.log('Daily DeepResearch placeholder at', new Date().toISOString())"
           fi
+

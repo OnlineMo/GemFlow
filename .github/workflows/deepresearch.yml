@@ -157,6 +157,11 @@ jobs:
           REPO_B: ${{ vars.REPO_B }}              # 建议设置为 owner/DeepResearch-Archive；脚本会有默认值
           RATE_LIMIT_RPM: ${{ vars.RATE_LIMIT_RPM }}   # 每分钟请求数（RPM），例如 1
           RATE_LIMIT_TPM: ${{ vars.RATE_LIMIT_TPM }}   # 每分钟 Token 数（TPM），例如 12500
+          TRENDING_SINCE_DAYS: ${{ vars.TRENDING_SINCE_DAYS }}
+          GITHUB_TRENDING_PER_PAGE: ${{ vars.GITHUB_TRENDING_PER_PAGE }}
+          HN_TOP_N: ${{ vars.HN_TOP_N }}
+          BAIDU_TOP_N: ${{ vars.BAIDU_TOP_N }}    # 百度热搜条数（默认 30）
+          BAIDU_TAB: ${{ vars.BAIDU_TAB }}        # 百度榜单 tab（如 realtime、novel、movie 等）
           TZ: Asia/Shanghai
         run: |
           set -e

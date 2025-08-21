@@ -1,1 +1,60 @@
+name: DeepResearch Daily (06:00 CST)
 
+on:
+  schedule:
+    - cron: '0 22 * * *'  # 每日北京时间 06:00 运行（UTC 22:00）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: deepresearch-daily
+  cancel-in-progress: false
+
+jobs:
+  generate_report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run daily DeepResearch
+        env:
+          GH_TOKEN: ${{ secrets.REPO_B_TOKEN }}   # 建议最小权限 PAT（repo:contents）写入库 B
+          REPO_B: ${{ vars.REPO_B }}              # 建议设置为 owner/DeepResearch-Archive；脚本会有默认值
+          TZ: Asia/Shanghai
+        run: |
+          set -e
+          echo "UTC now: $(date -u)"
+          echo "Local (Asia/Shanghai) now: $(TZ=Asia/Shanghai date)"
+          # 默认 REPO_B（如未配置仓库变量）
+          REPO_B="${REPO_B:-owner/DeepResearch-Archive}"
+          echo "Target Repo B: ${REPO_B}"
+          if npm run -s | grep -q '^  deepresearch:'; then
+            npm run deepresearch:daily
+          elif [ -f scripts/deepresearch.mjs ]; then
+            node scripts/deepresearch.mjs
+          else
+            echo "[placeholder] Implement scripts/deepresearch.mjs or npm run deepresearch:daily"
+            node -e "console.log('Daily DeepResearch placeholder at', new Date().toISOString())"
+          fi

@@ -1,3 +1,57 @@
+# ================================================
+# DeepResearch 每日自动执行工作流（使用与配置说明）
+# ================================================
+# 概述
+# - 用途：每天在北京时间 06:00 运行研究脚本，将产出推送到目标仓库（Repo B）。
+# - 位置：此工作流位于 Repo A（当前仓库），通常用于拉取/生成内容并提交到 Repo B。
+# - 运行环境：ubuntu-latest + Node.js 20，使用 npm ci 安装依赖。
+#
+# 必备配置（Repo A -> Settings -> Secrets and variables -> Actions）
+# 1) 仓库变量 vars.REPO_B（目标仓库）
+#    - 名称：REPO_B
+#    - 值：owner/repo（示例：yourname/DeepResearch-Archive）
+#    - 作用：指定产出要推送到的 Repo B；未设置时在脚本内回退为 owner/DeepResearch-Archive。
+#    - 配置位置：Repository settings -> Secrets and variables -> Actions -> Variables -> New variable
+# 2) 仓库密钥 secrets.REPO_B_TOKEN（访问 Repo B 的 PAT）
+#    - 名称：REPO_B_TOKEN
+#    - 用途：作为 GH_TOKEN，供脚本对 Repo B 执行写入（创建/更新文件、提交）
+#    - 推荐：Fine-grained PAT（细粒度令牌）
+#      - 生成路径：GitHub -> Settings -> Developer settings -> Personal access tokens -> Fine-grained tokens -> Generate new token
+#      - Repository access：Only select repositories，仅勾选目标 Repo B
+#      - Repository permissions：Contents -> Read and write
+#    - 备选（不推荐）：PAT classic，最小 scope 使用 repo（具备对内容读写能力），限制有效期并谨慎使用
+#    - 为什么不用内置 GITHUB_TOKEN？
+#      - GITHUB_TOKEN 通常仅对当前仓库有效，跨仓库 push 可能受限；本工作流需要写入 Repo B，因此建议使用用户 PAT
+#
+# 触发与时区
+# - GitHub Actions 的 cron 基于 UTC；本文件设置 '0 22 * * *'，对应北京时间每天 06:00（UTC+8）。
+# - 可在 Actions 页使用 workflow_dispatch 手动触发测试。
+# - 修改时间示例：若希望每天 01:30 CST，则将 cron 设置为 '30 17 * * *'。
+#
+# 并发与权限
+# - concurrency.group = deepresearch-daily，避免相同任务并发。
+# - permissions:
+#    - contents: write   允许对当前仓库内容进行写入
+#    - actions: read     读取 Actions 信息
+#
+# 脚本执行约定（按优先级尝试）
+# 1) package.json 中存在脚本："deepresearch:daily"
+# 2) 存在文件：scripts/deepresearch.mjs
+# 3) 否则进入占位分支，仅打印提示（方便首次集成观察日志）
+# 建议在 package.json 中添加：
+#   "scripts": { "deepresearch:daily": "node scripts/deepresearch.mjs" }
+#
+# 常见问题
+# - 403/权限错误：检查 REPO_B 名称与 PAT 权限（Repo B 的 Contents: Read and write）。
+# - 404/找不到仓库：确认 Repo B 已创建且 PAT 对其有访问权限。
+# - npm ci 失败：检查锁文件与 Node 版本是否匹配。
+# - 时间不对：记住 cron 使用 UTC；上海无夏令时，但若换用其他时区需自行换算。
+#
+# 安全建议
+# - 使用 Fine-grained PAT 并仅授权目标 Repo B。
+# - 设置较短有效期，定期轮换；不再使用立即撤销。
+# - 仅将令牌存放在 Secrets，切勿提交到代码库。
+# ================================================
 name: DeepResearch Daily (06:00 CST)
 
 on:

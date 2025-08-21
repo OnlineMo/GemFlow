@@ -71,6 +71,9 @@ jobs:
   generate_report:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: GemFlow
 
     steps:
       - name: Checkout
@@ -82,10 +85,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            echo "Lockfile found (package-lock.json or npm-shrinkwrap.json). Using npm ci"
+            npm ci
+          else
+            echo "No npm lockfile found. Using npm install"
+            npm install --no-audit --no-fund
+          fi
 
       - name: Configure git user
         run: |
